@@ -1,6 +1,13 @@
 """The embedding model (BAAI/bge-small-en-v1.5) and its tokenizer."""
 
+import os
 from functools import cache
+
+# Set before Hugging Face libraries load: otherwise every model load prints a progress bar and an
+# anonymous-access warning into CLI output.
+os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+os.environ.setdefault("HF_HUB_VERBOSITY", "error")
+os.environ.setdefault("HF_HUB_DISABLE_SYMLINKS_WARNING", "1")
 
 from tokenizers import Encoding, Tokenizer
 
@@ -10,7 +17,7 @@ from src.config import EMBED_MODEL, QUERY_PROMPT
 @cache
 def get_tokenizer() -> Tokenizer:
     tokenizer = Tokenizer.from_pretrained(EMBED_MODEL)
-    # The shipped tokenizer.json truncates at 512 tokens; budgets need the untruncated length.
+    # Token budgets need the true length, so never let a tokenizer config truncate or pad.
     tokenizer.no_truncation()
     tokenizer.no_padding()
     return tokenizer

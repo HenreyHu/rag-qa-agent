@@ -90,3 +90,19 @@ def utf8_stdout() -> None:
     # Filings contain characters such as U+25CF that a piped cp1252 Windows console can't encode.
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
+
+
+def format_table(header: list[str], rows: list[list], text_columns: int = 1) -> str:
+    """A plain-text table: the first `text_columns` columns left-aligned, the rest right-aligned."""
+    cells = [header] + [[str(value) for value in row] for row in rows]
+    widths = [max(len(row[i]) for row in cells) for i in range(len(header))]
+
+    def line(row: list[str]) -> str:
+        parts = [
+            value.ljust(width) if i < text_columns else value.rjust(width)
+            for i, (value, width) in enumerate(zip(row, widths, strict=True))
+        ]
+        return "  ".join(parts).rstrip()
+
+    rule = "  ".join("-" * width for width in widths)
+    return "\n".join([line(cells[0]), rule, *(line(row) for row in cells[1:])])
