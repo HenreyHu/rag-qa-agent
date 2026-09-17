@@ -157,7 +157,7 @@ def main() -> None:
         entry["sha256"] = digest
         print(f"{entry['key']}: {size:,} bytes -> {entry['local_path']}")
 
-    MANIFEST_PATH.write_text(json.dumps(entries, indent=2) + "\n", encoding="utf-8")
+    MANIFEST_PATH.write_text(json.dumps(entries, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Manifest: {MANIFEST_PATH.relative_to(ROOT)} ({len(entries)} filings)")
 
 
