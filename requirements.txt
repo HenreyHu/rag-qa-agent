@@ -1,16 +1,16 @@
 # Parsing: EDGAR HTML now, PDF annual reports later
-beautifulsoup4
-pdfplumber
-pymupdf
+beautifulsoup4==4.15.0
+pdfplumber==0.11.10
+pymupdf==1.28.2
 
 # Embeddings and vector store
-chromadb
-sentence-transformers
-tokenizers
+chromadb==1.5.9
+sentence-transformers==6.0.1
+tokenizers==0.23.2
 
 # LLM (Week 2 onward)
-anthropic
+anthropic==1.6.0
 
 # Utilities
-python-dotenv
-requests
+python-dotenv==1.2.3
+requests==2.34.2

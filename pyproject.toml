@@ -1,0 +1,15 @@
+# Tool settings only; dependencies live in requirements*.txt.
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+extend-select = ["I", "B", "UP", "PLW1514"]
+# PLW1514 (file I/O without an explicit encoding) is a preview rule, so opt into just that one.
+preview = true
+explicit-preview-rules = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
