@@ -1,0 +1,62 @@
+[
+  {
+    "key": "sea-2025",
+    "company": "sea",
+    "cik": 1703399,
+    "fiscal_year": 2025,
+    "form": "20-F",
+    "accession": "0001140361-26-015366",
+    "filing_date": "2026-04-17",
+    "report_date": "2025-12-31",
+    "primary_document": "ef20067274_20f.htm",
+    "url": "https://www.sec.gov/Archives/edgar/data/1703399/000114036126015366/ef20067274_20f.htm",
+    "local_path": "data/raw/sea-2025_20-F.htm",
+    "bytes": 5641014,
+    "sha256": "9474df67304ba388df96be05e3437b718755c2d18922440bbfb9de6f0e81f575"
+  },
+  {
+    "key": "sea-2024",
+    "company": "sea",
+    "cik": 1703399,
+    "fiscal_year": 2024,
+    "form": "20-F",
+    "accession": "0001193125-25-084311",
+    "filing_date": "2025-04-17",
+    "report_date": "2024-12-31",
+    "primary_document": "d940352d20f.htm",
+    "url": "https://www.sec.gov/Archives/edgar/data/1703399/000119312525084311/d940352d20f.htm",
+    "local_path": "data/raw/sea-2024_20-F.htm",
+    "bytes": 4680109,
+    "sha256": "ea57d13eb885210d4d30db883deb34b7cbee188750050fc81787499809631fc9"
+  },
+  {
+    "key": "grab-2025",
+    "company": "grab",
+    "cik": 1855612,
+    "fiscal_year": 2025,
+    "form": "20-F",
+    "accession": "0001855612-26-000020",
+    "filing_date": "2026-03-06",
+    "report_date": "2025-12-31",
+    "primary_document": "ck0001855612-20251231.htm",
+    "url": "https://www.sec.gov/Archives/edgar/data/1855612/000185561226000020/ck0001855612-20251231.htm",
+    "local_path": "data/raw/grab-2025_20-F.htm",
+    "bytes": 4185566,
+    "sha256": "68c5e4a382dd0ba49def07ad071396c8511fac39111465100df01ef94c14494a"
+  },
+  {
+    "key": "grab-2024",
+    "company": "grab",
+    "cik": 1855612,
+    "fiscal_year": 2024,
+    "form": "20-F",
+    "accession": "0001855612-25-000013",
+    "filing_date": "2025-03-14",
+    "report_date": "2024-12-31",
+    "primary_document": "ck0001855612-20241231.htm",
+    "url": "https://www.sec.gov/Archives/edgar/data/1855612/000185561225000013/ck0001855612-20241231.htm",
+    "local_path": "data/raw/grab-2024_20-F.htm",
+    "bytes": 4700338,
+    "sha256": "fe28e98a48e762c30a22fb2cf467b78ceb1ca3f19837896f6d932d9aee1e2385"
+  }
+]
