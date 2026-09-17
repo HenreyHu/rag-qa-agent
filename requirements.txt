@@ -1,0 +1,16 @@
+# Parsing: EDGAR HTML now, PDF annual reports later
+beautifulsoup4
+pdfplumber
+pymupdf
+
+# Embeddings and vector store
+chromadb
+sentence-transformers
+tokenizers
+
+# LLM (Week 2 onward)
+anthropic
+
+# Utilities
+python-dotenv
+requests
