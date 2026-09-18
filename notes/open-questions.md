@@ -32,3 +32,22 @@ Each part becomes its own table chunk, which matches the printed pages but split
 ### Text-only tables get an empty header row
 
 Two-column tables of prose (for example the auditor's critical audit matters) have no header row, because their first row is content.
+
+## Eval
+
+### Gold pages only count exact matches
+
+A gold page lists every page where the evidence snippet appears word for word.
+A page that states the same fact in other words (for example "US$22.9 billion" instead of "22,938,469") is not listed, so retrieving it counts as a miss.
+If verification finds such pages, add them as `|` alternatives; `gold_tools check` will list them as warnings, not errors.
+
+### Questions name the fiscal year and sometimes the report
+
+Every question names the company and fiscal year, because the baseline has no filters and the FY2025 report repeats FY2024 figures.
+Some narrative questions say "according to ... FY2025 annual report", which turned out to attract cover and signature pages.
+That wording is kept on purpose, because real users phrase questions that way.
+
+### Comparison questions need several filings
+
+Each comparison question needs evidence from at least two filings; C10 needs all four.
+Strict hit@5 requires all of them in one top 5, which a single query can rarely achieve, so the baseline is expected to be low.
