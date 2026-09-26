@@ -10,7 +10,7 @@ Every answer cites the report page it came from, and questions can compare compa
 Week 1 of 4 is done: ingestion, retrieval, and a retrieval eval.
 The answer-generation step (Week 2) and the agent loop (Week 3) come next.
 
-Baseline retrieval hit@5 (strict, no filters, eval set not yet verified by hand):
+Baseline retrieval hit@5 (strict, no filters, all 30 questions verified by hand):
 
 | Question type | Fixed-size chunks | Section-aware chunks |
 |---|---|---|

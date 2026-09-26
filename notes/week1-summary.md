@@ -32,7 +32,7 @@ Parsing takes about 1 second per filing, and embedding the 3,952 distinct chunks
 
 ## Retrieval hit@5 (baseline, no metadata filters)
 
-These numbers use the unverified eval set, so treat them as provisional until every question is checked by hand.
+These numbers use the fully verified eval set: all 30 questions were checked by hand against the source filings.
 
 | Question type | n | Fixed strict@5 | Fixed any@5 | Section strict@5 | Section any@5 |
 |---|---|---|---|---|---|
@@ -66,7 +66,6 @@ Section-aware chunking finds one more piece of comparison evidence, which is too
 
 ## Known issues
 
-- The eval set is unverified: every gold answer and page came from the parsed text, but no human has checked them against the reports yet.
 - A gold page only lists pages that contain the exact evidence snippet, so a page stating the same fact in other words counts as a miss.
 - Pages with no printed number get labels like `s152`; the financial statement index page is also filed under Item 19.
 - Section detection is heuristic (see `notes/open-questions.md`).
@@ -78,8 +77,8 @@ Section-aware chunking finds one more piece of comparison evidence, which is too
    Everything else, including the eval, depends on page labels being right.
    `python -m src.parse_filing data/raw/sea-2025_20-F.htm --page 95` prints any page as the parser sees it.
 2. **The two chunkers** in `src/chunking.py`: `chunk_fixed` and `chunk_sections`.
-3. **Five random eval questions**, checked against the filing in a browser: open the URL from `data/filings.json`, Ctrl+F the evidence snippet, and confirm the printed page number.
-   Then verify the rest and set `verified` to TRUE.
+3. **All 30 eval questions**, checked against the filing in a browser: open the URL from `data/filings.json`, Ctrl+F the evidence snippet, and confirm the printed page number.
+   The full check-by-hand notes are in `notes/eval-verification-worksheet.md`.
 
 ## How to reproduce
 
