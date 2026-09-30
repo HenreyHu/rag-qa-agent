@@ -30,6 +30,19 @@ OVERLAP_TOKENS = 75
 HEADER_MAX_TOKENS = 60  # 60 + 450 + [CLS] + [SEP] = 512
 SOFT_BREAK_MIN_TOKENS = 200
 
+# Answer generation (src/rag.py). No temperature setting: this SDK/model rejects the argument,
+# so runs can vary slightly; re-run a question before trusting a one-off difference.
+ANSWER_MODEL = "claude-sonnet-5"
+ANSWER_MAX_TOKENS = 1024
+# A separate call grades each answer (eval/answer_eval.py); same model.
+GRADER_MODEL = "claude-sonnet-5"
+SYSTEM_PROMPT = (
+    "Answer the question using only the provided context. "
+    "Every claim must include a citation in the format [Company, FYyear, p.X]. "
+    "If the answer is not in the context, say 'I don't know.' "
+    "Do not use outside knowledge."
+)
+
 COLLECTIONS = {"fixed": "filings_fixed", "section": "filings_section"}
 STRATEGIES = tuple(COLLECTIONS)
 
