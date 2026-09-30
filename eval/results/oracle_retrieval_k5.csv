@@ -1,0 +1,17 @@
+﻿strategy,setting,type,n,strict,any
+fixed,no filter,lookup,10,9,9
+fixed,no filter,narrative,10,5,5
+fixed,no filter,comparison,10,1,7
+fixed,no filter,all,30,15,21
+fixed,oracle filter,lookup,10,9,9
+fixed,oracle filter,narrative,10,7,7
+fixed,oracle filter,comparison,10,1,7
+fixed,oracle filter,all,30,17,23
+section,no filter,lookup,10,9,9
+section,no filter,narrative,10,5,5
+section,no filter,comparison,10,1,8
+section,no filter,all,30,15,22
+section,oracle filter,lookup,10,10,10
+section,oracle filter,narrative,10,6,6
+section,oracle filter,comparison,10,1,8
+section,oracle filter,all,30,17,24
