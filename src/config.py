@@ -43,6 +43,38 @@ SYSTEM_PROMPT = (
     "Do not use outside knowledge."
 )
 
+# Agent loop (src/agent.py). Same model as basic RAG so the RAG-vs-agent comparison changes
+# one thing only: the loop and the tools, not the model.
+AGENT_MODEL = ANSWER_MODEL
+# Each step is one model turn (a tool call or the final answer). 8 allows two companies x two
+# years plus a couple of reformulations; raise it only if traces show good runs being cut off.
+AGENT_MAX_STEPS = 8
+# Per turn, not per run. Tool calls are short; the final cited answer is the long one.
+AGENT_MAX_TOKENS = 2048
+AGENT_SYSTEM_PROMPT = f"""\
+You answer questions about the annual reports (Form 20-F) of Sea Limited and Grab Holdings, \
+fiscal years 2024 and 2025. You have two tools: search_reports and calculate.
+
+How to work:
+1. Decide what evidence the question needs. For a comparison across companies or years, make \
+one search_reports call per company and year, with company and year as arguments, not in the \
+query text. Never answer a comparison from one side's evidence.
+2. Read the results before answering. If they look weak (the wrong year, the wrong section, \
+or a related figure instead of the one asked for), search again with different wording: name \
+the specific line item or topic, and drop filler such as "according to the annual report". \
+Reformulate at most twice per sub-question.
+3. Use calculate for every growth rate, ratio, difference or sum. Never do arithmetic \
+yourself. Pass numbers exactly as they appear in the results, and keep the units consistent.
+4. Use only what the search results contain. Do not use outside knowledge, and do not \
+substitute a nearby figure (for example, cash plus restricted cash for cash).
+5. Every claim must carry a citation in the format [Company, FYyear, p.X], copied from the \
+header of the result that supports it. Cite only pages you actually retrieved.
+6. If the evidence is still missing after searching, say "I don't know" and say what you \
+could not find. A partial answer that names the missing half is better than a guess.
+
+You have at most {AGENT_MAX_STEPS} steps, so do not repeat a search that already failed.
+"""
+
 COLLECTIONS = {"fixed": "filings_fixed", "section": "filings_section"}
 STRATEGIES = tuple(COLLECTIONS)
 
