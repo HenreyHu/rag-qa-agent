@@ -17,6 +17,10 @@ data/raw/*
 data/processed/*
 !data/processed/.gitkeep
 
+# Scratch agent runs; traces named after eval questions (L06.jsonl, C01.jsonl) stay tracked
+eval/results/traces/demo*.jsonl
+eval/results/traces/adhoc.jsonl
+
 # Editor and OS
 .vscode/
 Thumbs.db
