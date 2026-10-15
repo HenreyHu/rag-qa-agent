@@ -7,10 +7,21 @@ Every answer cites the report page it came from, and questions can compare compa
 
 ## Status
 
-Week 2 of 4 is done: basic RAG with page citations, an answer eval, and two retrieval experiments.
-The agent loop (Week 3) comes next.
+Week 3 of 4 is done: basic RAG, then an agent (Claude tool-use loop with `search_reports` and `calculate`), with an answer eval comparing the two.
+Week 4 (polish and write-up) is next.
 
-Baseline results on the 30 verified questions (section chunks, k = 5, no filters):
+Agent vs basic RAG, same 30 questions (correct / total; 5 of the 30 were used to tune the agent prompt, and single runs vary):
+
+| Question type | Basic RAG | Agent (vector) | Agent (hybrid search, 1 run) |
+|---|---|---|---|
+| Lookup | 80% | 80% | 100% |
+| Narrative | 40% | 90% | 100% |
+| Comparison | 30% | 100% | 100% |
+| All | 50% | 90% (two runs: 90%, 90%) | 100% |
+
+The agent costs more: about 11.9k input tokens and 8.6s per question against about 2.5k and 3s for basic RAG. See [notes/week3-summary.md](notes/week3-summary.md).
+
+Baseline (Week 2) results on the 30 verified questions (section chunks, k = 5, no filters):
 
 | Question type | Retrieval strict hit@5 | Answer correct | Answer abstained |
 |---|---|---|---|
