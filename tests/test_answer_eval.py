@@ -1,4 +1,8 @@
+import pytest
+
+from eval import answer_eval
 from eval.answer_eval import (
+    agent_answer_fn,
     citation_scores,
     evaluate,
     needs_review,
@@ -6,6 +10,7 @@ from eval.answer_eval import (
     numbers_in,
     parse_grade,
     summarize,
+    summarize_cost,
 )
 from eval.gold_tools import Evidence, Question
 
@@ -103,3 +108,80 @@ def test_filters_fn_is_passed_to_answer():
         grade_fn=lambda q, g, a: ("abstained", ""),
     )
     assert seen["filters"] == {"company": "Sea"}
+
+
+AGENT_RESULT = {
+    "answer": "US$22.9 billion [Sea, FY2025, p.95]",
+    "hits": HITS,
+    "steps": 2,
+    "tool_calls": 1,
+    "hit_cap": False,
+    "input_tokens": 6000,
+    "output_tokens": 300,
+    "seconds": 25.0,
+}
+
+
+def run_fake(result):
+    return evaluate(
+        [question()],
+        5,
+        "section",
+        answer_fn=lambda text, k, filters, strategy: result,
+        grade_fn=lambda q, g, a: ("correct", ""),
+    )
+
+
+def test_evaluate_carries_cost_columns_into_the_row():
+    row = run_fake(AGENT_RESULT)[0]
+    assert (row["steps"], row["tool_calls"], row["hit_cap"]) == (2, 1, False)
+    assert (row["input_tokens"], row["output_tokens"], row["seconds"]) == (6000, 300, 25.0)
+
+
+def test_rows_without_cost_numbers_still_evaluate():
+    row = run_fake({"answer": "I don't know.", "hits": []})[0]
+    assert "input_tokens" not in row
+
+
+def test_every_cost_column_has_an_output_column():
+    assert set(answer_eval.COST_COLUMNS) <= set(answer_eval.RESULT_COLUMNS)
+
+
+def test_summarize_cost_reports_means_per_type_and_capped_runs():
+    rows = [
+        {**run_fake(AGENT_RESULT)[0]},
+        {**run_fake({**AGENT_RESULT, "steps": 4, "input_tokens": 10000, "hit_cap": True})[0]},
+    ]
+    table = summarize_cost(rows)
+    lookup = next(line for line in table.splitlines() if line.startswith("lookup"))
+    assert lookup.split() == ["lookup", "2", "3.0", "1.0", "8,000", "300", "25.0", "1"]
+
+
+def test_summarize_cost_for_basic_rag_has_tokens_but_no_steps():
+    rag_result = {"answer": "x [Sea, FY2025, p.95]", "hits": HITS, "input_tokens": 3000}
+    table = summarize_cost(run_fake(rag_result))
+    lookup = next(line for line in table.splitlines() if line.startswith("lookup"))
+    assert lookup.split()[:6] == ["lookup", "1", "-", "-", "3,000", "-"]
+
+
+def test_summarize_cost_is_empty_without_any_timing():
+    assert summarize_cost(run_fake({"answer": "x", "hits": []})) == ""
+
+
+def test_agent_answer_fn_names_the_trace_after_the_question_id(monkeypatch, tmp_path):
+    calls = []
+
+    def fake_run_agent(text, qid, *, trace_dir):
+        calls.append((text, qid, trace_dir))
+        return AGENT_RESULT
+
+    monkeypatch.setattr(answer_eval, "run_agent", fake_run_agent)
+    answer_fn = agent_answer_fn([question()], tmp_path)
+    result = answer_fn("What was Sea's revenue?", 5, None, "section")
+    assert result is AGENT_RESULT
+    assert calls == [("What was Sea's revenue?", "L01", tmp_path)]
+
+
+def test_agent_answer_fn_rejects_duplicate_question_text(tmp_path):
+    with pytest.raises(ValueError, match="unique"):
+        agent_answer_fn([question("L01"), question("L02")], tmp_path)

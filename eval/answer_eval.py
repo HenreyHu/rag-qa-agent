@@ -25,6 +25,7 @@ import anthropic
 
 from eval.gold_tools import QUESTION_TYPES, Question, load_questions
 from src import rag
+from src.agent import TRACE_DIR, run_agent
 from src.citations import Citation, parse_citations
 from src.config import (
     GRADER_MODEL,
@@ -68,7 +69,15 @@ RESULT_COLUMNS = [
     "citations_retrieved",
     "answer",
     "retrieved",
+    "steps",
+    "tool_calls",
+    "hit_cap",
+    "input_tokens",
+    "output_tokens",
+    "seconds",
 ]
+# Cost columns: filled for the agent, and for basic RAG when rag.answer reports them.
+COST_COLUMNS = ("steps", "tool_calls", "hit_cap", "input_tokens", "output_tokens", "seconds")
 
 SUMMED = ("n_citations", "citations_correct", "gold_cited", "gold_total", "citations_retrieved")
 NUMBER = re.compile(r"\d[\d,]*(?:\.\d+)?")
@@ -185,10 +194,12 @@ def evaluate(
     rows = []
     for number, q in enumerate(questions, start=1):
         row = {"id": q.id, "type": q.type, "verified": q.verified}
+        stats = {}
         try:
             filters = filters_fn(q) if filters_fn else None
             result = answer_fn(q.question, k, filters, strategy)
             answer, hits = result["answer"], result["hits"]
+            stats = {key: result[key] for key in COST_COLUMNS if key in result}
             grade, reason = grade_fn(q.question, q.gold_answer, answer)
         except anthropic.APIError as exc:
             answer, hits, grade, reason = "", [], "error", f"API error: {exc}"
@@ -201,10 +212,24 @@ def evaluate(
             **citation_scores(q, answer, hits),
             answer=answer,
             retrieved="; ".join(f"{hit['filing']} p.{'|'.join(hit['pages'])}" for hit in hits),
+            **stats,
         )
         rows.append(row)
         print(f"[{number}/{len(questions)}] {q.id}: {grade}")
     return rows
+
+
+def agent_answer_fn(questions: list[Question], trace_dir):
+    """Adapt run_agent to evaluate()'s answer_fn signature, naming each trace after its question id."""
+    ids = {q.question: q.id for q in questions}
+    if len(ids) != len(questions):
+        raise ValueError("question texts must be unique, because traces are named by question id")
+
+    def answer_fn(question, k, filters, strategy):
+        # k, filters and strategy do not apply: the agent chooses its own searches.
+        return run_agent(question, ids[question], trace_dir=trace_dir)
+
+    return answer_fn
 
 
 def _pct(part: int, whole: int) -> str:
@@ -250,6 +275,40 @@ def summarize(rows: list[dict]) -> str:
     return format_table(header, table) + notes
 
 
+def _mean(rows: list[dict], key: str, fmt: str) -> str:
+    values = [r[key] for r in rows if r.get(key) not in (None, "")]
+    return format(sum(values) / len(values), fmt) if values else "-"
+
+
+def summarize_cost(rows: list[dict]) -> str:
+    """Mean turns, tool calls, tokens and seconds per question type. Empty if nothing was timed."""
+    header = ["type", "n", "turns", "tool_calls", "in_tokens", "out_tokens", "seconds", "capped"]
+    table = []
+    for qtype in (*QUESTION_TYPES, "all"):
+        subset = [
+            r
+            for r in rows
+            if qtype in ("all", r["type"]) and r.get("input_tokens") not in (None, "")
+        ]
+        if not subset:
+            continue
+
+        capped = sum(r.get("hit_cap") is True for r in subset) if "steps" in subset[0] else "-"
+        table.append(
+            [
+                qtype,
+                len(subset),
+                _mean(subset, "steps", ".1f"),
+                _mean(subset, "tool_calls", ".1f"),
+                _mean(subset, "input_tokens", ",.0f"),
+                _mean(subset, "output_tokens", ",.0f"),
+                _mean(subset, "seconds", ".1f"),
+                capped,
+            ]
+        )
+    return format_table(header, table) if table else ""
+
+
 def write_results(rows: list[dict], name: str) -> None:
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     path = RESULTS_DIR / name
@@ -270,6 +329,16 @@ def main() -> None:
     parser.add_argument("--strategy", choices=STRATEGIES, default="section")
     parser.add_argument("--verified-only", action="store_true")
     parser.add_argument("--limit", type=int, help="only the first N questions (cheap smoke test)")
+    parser.add_argument(
+        "--mode",
+        choices=("rag", "agent"),
+        default="rag",
+        help="rag: retrieve once and answer. agent: the tool-use loop (ignores --k and --strategy)",
+    )
+    parser.add_argument(
+        "--tag",
+        help="names the output file and, for the agent, the trace folder (default run1 for agent)",
+    )
     args = parser.parse_args()
 
     questions = load_questions()
@@ -277,12 +346,30 @@ def main() -> None:
         questions = [q for q in questions if q.verified]
     if args.limit:
         questions = questions[: args.limit]
-    rows = evaluate(questions, args.k, args.strategy)
-
-    print(f"\nAnswer eval: {args.strategy} chunks, k={args.k}, {len(questions)} questions")
-    print(summarize(rows))
     suffix = "_verified" if args.verified_only else ""
-    write_results(rows, f"answers_{args.strategy}_k{args.k}{suffix}.csv")
+
+    if args.mode == "agent":
+        tag = args.tag or "run1"
+        rows = evaluate(
+            questions,
+            args.k,
+            args.strategy,
+            answer_fn=agent_answer_fn(questions, TRACE_DIR / tag),
+        )
+        label = f"agent ({tag}), traces in eval/results/traces/{tag}/"
+        name = f"answers_agent_{tag}{suffix}.csv"
+    else:
+        rows = evaluate(questions, args.k, args.strategy)
+        label = f"basic RAG, {args.strategy} chunks, k={args.k}"
+        tag = f"_{args.tag}" if args.tag else ""
+        name = f"answers_{args.strategy}_k{args.k}{tag}{suffix}.csv"
+
+    print(f"\nAnswer eval: {label}, {len(questions)} questions")
+    print(summarize(rows))
+    cost = summarize_cost(rows)
+    if cost:
+        print(f"\nCost per question (means):\n{cost}")
+    write_results(rows, name)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ Example:
 """
 
 import argparse
+import time
 from functools import cache
 
 import anthropic
@@ -38,6 +39,7 @@ def answer(
 
     The hits are returned so the eval can check whether each cited page was actually retrieved.
     """
+    started = time.perf_counter()
     hits = search(question, k, filters, strategy)
     response = get_client().messages.create(
         model=ANSWER_MODEL,
@@ -51,7 +53,15 @@ def answer(
         ],
     )
     text = "".join(block.text for block in response.content if block.type == "text")
-    return {"question": question, "answer": text.strip(), "hits": hits}
+    return {
+        "question": question,
+        "answer": text.strip(),
+        "hits": hits,
+        # Cost, so the agent can be compared with this baseline on tokens and time as well as score.
+        "input_tokens": response.usage.input_tokens,
+        "output_tokens": response.usage.output_tokens,
+        "seconds": round(time.perf_counter() - started, 2),
+    }
 
 
 def main() -> None:
