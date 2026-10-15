@@ -1,6 +1,7 @@
 """Project-wide paths, model settings and the company registry."""
 
 import json
+import os
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -51,6 +52,11 @@ AGENT_MODEL = ANSWER_MODEL
 AGENT_MAX_STEPS = 8
 # Per turn, not per run. Tool calls are short; the final cited answer is the long one.
 AGENT_MAX_TOKENS = 2048
+# How search_reports retrieves: "vector" (embeddings only) or "hybrid" (embeddings + BM25 keyword
+# match, fused by rank). The environment variable lets an eval run switch it without editing code.
+AGENT_SEARCH_MODE = os.environ.get("AGENT_SEARCH_MODE", "vector")
+if AGENT_SEARCH_MODE not in ("vector", "hybrid"):
+    raise ValueError(f"AGENT_SEARCH_MODE must be 'vector' or 'hybrid', got {AGENT_SEARCH_MODE!r}")
 AGENT_SYSTEM_PROMPT = f"""\
 You answer questions about the annual reports (Form 20-F) of Sea Limited and Grab Holdings, \
 fiscal years 2024 and 2025. You have two tools: search_reports and calculate.

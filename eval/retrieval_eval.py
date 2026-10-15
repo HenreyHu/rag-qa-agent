@@ -12,7 +12,7 @@ import csv
 
 from eval.gold_tools import QUESTION_TYPES, Evidence, Question, load_questions
 from src.config import RESULTS_DIR, ROOT, STRATEGIES, format_table, utf8_stdout
-from src.retrieve import search
+from src.retrieve import SEARCH_MODES, search
 
 RESULT_COLUMNS = [
     "strategy",
@@ -40,12 +40,14 @@ def score(question: Question, hits: list[dict]) -> list[bool]:
     return [any(evidence_found(e, hit) for hit in hits) for e in question.evidence]
 
 
-def evaluate(questions: list[Question], strategies: list[str], k: int) -> list[dict]:
+def evaluate(
+    questions: list[Question], strategies: list[str], k: int, mode: str = "vector"
+) -> list[dict]:
     rows = []
     for strategy in strategies:
         for q in questions:
             # No metadata filters: this is the unfiltered baseline (filtering is a Week 2 experiment).
-            hits = search(q.question, k=k, strategy=strategy)
+            hits = search(q.question, k=k, strategy=strategy, mode=mode)
             matched = score(q, hits)
             first_rank = next(
                 (
@@ -112,6 +114,7 @@ def main() -> None:
     parser.add_argument(
         "--verified-only", action="store_true", help="only score questions checked by hand"
     )
+    parser.add_argument("--mode", choices=SEARCH_MODES, default="vector")
     args = parser.parse_args()
 
     questions = load_questions()
@@ -121,11 +124,16 @@ def main() -> None:
         questions = [q for q in questions if q.verified]
         if not questions:
             parser.error("no questions are marked verified yet")
-    rows = evaluate(questions, args.strategies, args.k)
+    rows = evaluate(questions, args.strategies, args.k, args.mode)
 
-    print(f"Retrieval hit@{args.k} on {len(questions)} questions ({verified}/{total} verified)")
+    print(
+        f"Retrieval hit@{args.k} ({args.mode}) on {len(questions)} questions "
+        f"({verified}/{total} verified)"
+    )
     print(summarize(rows, args.strategies, args.k))
-    suffix = "_verified" if args.verified_only else ""
+    suffix = ("_hybrid" if args.mode == "hybrid" else "") + (
+        "_verified" if args.verified_only else ""
+    )
     write_results(rows, f"retrieval_k{args.k}{suffix}.csv")
 
 

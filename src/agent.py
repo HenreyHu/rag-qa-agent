@@ -18,6 +18,7 @@ from src.config import (
     AGENT_MAX_STEPS,
     AGENT_MAX_TOKENS,
     AGENT_MODEL,
+    AGENT_SEARCH_MODE,
     AGENT_SYSTEM_PROMPT,
     RESULTS_DIR,
     utf8_stdout,
@@ -97,7 +98,13 @@ def run_agent(
         trace_path.write_text("", encoding="utf-8")  # one run per file
     _log(
         trace_path,
-        {"event": "question", "question": question, "model": AGENT_MODEL, "max_steps": max_steps},
+        {
+            "event": "question",
+            "question": question,
+            "model": AGENT_MODEL,
+            "max_steps": max_steps,
+            "search_mode": AGENT_SEARCH_MODE,
+        },
     )
 
     messages = [{"role": "user", "content": question}]

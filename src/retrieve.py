@@ -5,7 +5,10 @@ Example:
 """
 
 import argparse
+import math
+import re
 import textwrap
+from collections import Counter
 from functools import cache
 
 import chromadb
@@ -63,10 +66,111 @@ def _canonical_companies(value):
     return value
 
 
-def search(
-    query: str, k: int = 5, filters: dict | None = None, strategy: str = "section"
+SEARCH_MODES = ("vector", "hybrid")
+RRF_K = 60  # the usual reciprocal-rank-fusion constant: it damps the gap between top ranks
+CANDIDATES = 50  # each ranking contributes its top 50 chunks to the fusion
+_WORD = re.compile(r"[a-z0-9]+")
+
+
+def tokenize(text: str) -> list[str]:
+    return _WORD.findall(text.lower())
+
+
+def _matches(metadata: dict, filters: dict) -> bool:
+    def ok(key, wanted):
+        if wanted is None:
+            return True
+        value = metadata.get(key)
+        return value in wanted if isinstance(wanted, list | tuple | set) else value == wanted
+
+    return all(ok(key, wanted) for key, wanted in filters.items())
+
+
+class Bm25Index:
+    """Okapi BM25 over every chunk of one collection, so exact words (line items, names) count.
+
+    Vector search blurs rare exact words into a topic; BM25 rewards them, which is why the two
+    are mixed. There are only about 2,400 chunks, so scanning them is fast and needs no library.
+    """
+
+    def __init__(self, ids, texts, metadatas, k1: float = 1.5, b: float = 0.75):
+        self.ids, self.texts, self.metadatas = ids, texts, metadatas
+        self.k1, self.b = k1, b
+        self.counts = [Counter(tokenize(text)) for text in texts]
+        self.lengths = [sum(c.values()) for c in self.counts]
+        self.average = sum(self.lengths) / len(self.lengths)
+        document_frequency = Counter()
+        for c in self.counts:
+            document_frequency.update(c.keys())
+        n = len(texts)
+        self.idf = {
+            term: math.log(1 + (n - df + 0.5) / (df + 0.5))
+            for term, df in document_frequency.items()
+        }
+
+    def top(self, query: str, n: int, filters: dict) -> list[dict]:
+        terms = [t for t in dict.fromkeys(tokenize(query)) if t in self.idf]
+        scored = []
+        for i, counts in enumerate(self.counts):
+            if not _matches(self.metadatas[i], filters):
+                continue
+            norm = self.k1 * (1 - self.b + self.b * self.lengths[i] / self.average)
+            score = sum(
+                self.idf[t] * counts[t] * (self.k1 + 1) / (counts[t] + norm)
+                for t in terms
+                if counts[t]
+            )
+            if score > 0:
+                scored.append((score, i))
+        scored.sort(reverse=True)
+        return [
+            {"id": self.ids[i], "score": score, "text": self.texts[i], **self.metadatas[i]}
+            for score, i in scored[:n]
+        ]
+
+
+@cache
+def get_bm25(strategy: str) -> Bm25Index:
+    data = get_collection(strategy).get(include=["documents", "metadatas"])
+    return Bm25Index(data["ids"], data["documents"], data["metadatas"])
+
+
+def hybrid_search(
+    query: str, k: int, filters: dict | None = None, strategy: str = "section"
 ) -> list[dict]:
-    """The top-k chunks for a query, optionally filtered on metadata such as company or year."""
+    """Vector and BM25 rankings fused with reciprocal rank fusion (score = sum of 1/(60 + rank)).
+
+    Rank-based fusion avoids having to scale cosine similarity and BM25 scores onto one range.
+    """
+    filters = dict(filters or {})
+    if "company" in filters:
+        filters["company"] = _canonical_companies(filters["company"])
+    rankings = [
+        search(query, CANDIDATES, filters, strategy),
+        get_bm25(strategy).top(query, CANDIDATES, filters),
+    ]
+    fused: dict[str, dict] = {}
+    for ranking in rankings:
+        for rank, hit in enumerate(ranking, start=1):
+            entry = fused.setdefault(hit["id"], {"hit": hit, "score": 0.0})
+            entry["score"] += 1 / (RRF_K + rank)
+    best = sorted(fused.values(), key=lambda entry: entry["score"], reverse=True)[:k]
+    return [{**entry["hit"], "score": entry["score"]} for entry in best]
+
+
+def search(
+    query: str,
+    k: int = 5,
+    filters: dict | None = None,
+    strategy: str = "section",
+    mode: str = "vector",
+) -> list[dict]:
+    """The top-k chunks for a query, optionally filtered on metadata such as company or year.
+
+    mode "hybrid" mixes in keyword (BM25) matches; "vector" is the embedding search alone.
+    """
+    if mode == "hybrid":
+        return hybrid_search(query, k, filters, strategy)
     filters = dict(filters or {})
     if "company" in filters:
         filters["company"] = _canonical_companies(filters["company"])
@@ -98,12 +202,14 @@ def main() -> None:
     parser.add_argument("query")
     parser.add_argument("--k", type=int, default=5)
     parser.add_argument("--strategy", choices=STRATEGIES, default="section")
+    parser.add_argument("--mode", choices=SEARCH_MODES, default="vector")
     parser.add_argument("--company", help="Sea or Grab")
     parser.add_argument("--year", type=int, help="fiscal year of the report, e.g. 2025")
     args = parser.parse_args()
 
     filters = {"company": args.company, "year": args.year}
-    for rank, hit in enumerate(search(args.query, args.k, filters, args.strategy), start=1):
+    hits = search(args.query, args.k, filters, args.strategy, args.mode)
+    for rank, hit in enumerate(hits, start=1):
         kind = "table" if hit["is_table"] else "text"
         print(f"{rank}. {citation(hit)}  score {hit['score']:.3f}  {kind}")
         print(f"   {hit['section']}")

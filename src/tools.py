@@ -8,7 +8,7 @@ import ast
 import operator
 import re
 
-from src.config import COMPANIES, find_company, load_filings
+from src.config import AGENT_SEARCH_MODE, COMPANIES, find_company, load_filings
 from src.retrieve import citation, search
 
 _BINARY = {
@@ -148,7 +148,7 @@ def search_reports(
         filters = _filters(company, year)
     except SearchInputError as exc:
         return f"Error: {exc}. Fix the arguments and search again."
-    hits = search(query.strip(), SEARCH_K, filters)
+    hits = search(query.strip(), SEARCH_K, filters, mode=AGENT_SEARCH_MODE)
     if seen is not None:
         seen.extend(hits)
     if not hits:

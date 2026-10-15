@@ -23,8 +23,8 @@ def calls(monkeypatch):
     """Replace the vector search with a stub, so no embedding model or Chroma is needed."""
     recorded = []
 
-    def fake_search(query, k=5, filters=None, strategy="section"):
-        recorded.append({"query": query, "k": k, "filters": filters})
+    def fake_search(query, k=5, filters=None, strategy="section", mode="vector"):
+        recorded.append({"query": query, "k": k, "filters": filters, "mode": mode})
         return [HIT]
 
     monkeypatch.setattr(tools, "search", fake_search)
@@ -48,6 +48,7 @@ def test_filters_are_canonicalised_and_k_is_fixed(calls):
     search_reports("revenue", "sea", "2025")  # lowercase name, year sent as text
     assert calls[0]["filters"] == {"company": "Sea", "year": 2025}
     assert calls[0]["k"] == tools.SEARCH_K
+    assert calls[0]["mode"] == tools.AGENT_SEARCH_MODE
 
 
 def test_no_filters_and_empty_strings_mean_unfiltered(calls):
