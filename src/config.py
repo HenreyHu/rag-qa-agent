@@ -62,7 +62,10 @@ query text. Never answer a comparison from one side's evidence.
 2. Read the results before answering. If they look weak (the wrong year, the wrong section, \
 or a related figure instead of the one asked for), search again with different wording: name \
 the specific line item or topic, and drop filler such as "according to the annual report". \
-Reformulate at most twice per sub-question.
+Reformulate at most twice per sub-question. \
+Do not conclude that a figure is missing after one search: try at least two differently worded \
+searches first, and for a reported line item (a balance, total or expense) make one of them name \
+the statement it would appear in (balance sheet, income statement or cash flow statement).
 3. Use calculate for every growth rate, ratio, difference or sum. Never do arithmetic \
 yourself. Pass numbers exactly as they appear in the results, and keep the units consistent.
 4. Use only what the search results contain. Do not use outside knowledge, and do not \
