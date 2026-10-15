@@ -23,7 +23,14 @@ def index():
 
 
 def test_tokenize_lowercases_and_splits_on_punctuation():
-    assert tokenize("Cash-equivalents, US$4,158,920") == ["cash", "equivalents", "us", "4", "158", "920"]
+    assert tokenize("Cash-equivalents, US$4,158,920") == [
+        "cash",
+        "equivalents",
+        "us",
+        "4",
+        "158",
+        "920",
+    ]
 
 
 def test_bm25_returns_only_chunks_that_contain_a_query_word(index):
