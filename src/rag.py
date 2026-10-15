@@ -24,7 +24,8 @@ from src.retrieve import citation, search
 @cache
 def get_client() -> anthropic.Anthropic:
     load_env()  # puts ANTHROPIC_API_KEY from .env into the environment
-    return anthropic.Anthropic()
+    # A call that stalls is cut off after 60s and retried, instead of hanging a whole eval run.
+    return anthropic.Anthropic(timeout=60.0, max_retries=3)
 
 
 def build_context(hits: list[dict]) -> str:
