@@ -1,0 +1,164 @@
+﻿id,type,verified,grade,reason,number_match,needs_review,n_citations,citations_correct,gold_cited,gold_total,citations_retrieved,answer,retrieved,steps,tool_calls,hit_cap,input_tokens,output_tokens,seconds
+L01,lookup,TRUE,correct,"Model matches gold total revenue figure of US$22,938,469 thousand.",1/2,FALSE,2,2,1,1,2,"Sea Limited's total revenue in FY2025 was **US$22,938,469 thousand (~US$22.94 billion)**, up from US$16,819,866 thousand in FY2024 [Sea, FY2025, p.95].
+
+This was driven by:
+- E-commerce (Shopee): $14,545,894 thousand (63.4% of total)
+- Digital Financial Services (Monee): $3,791,641 thousand (16.6% of total)
+- Digital Entertainment (Garena): $2,408,765 thousand (10.5% of total)
+- Sales of goods: $2,025,408 thousand (8.8% of total)
+- Other services: $166,761 thousand (0.7% of total)
+
+[Sea, FY2025, p.95]",sea-2025 p.97|98; sea-2025 p.95|96; sea-2025 p.97; sea-2025 p.95; sea-2025 p.96|97,2,1,FALSE,6044,342,25.35
+L02,lookup,TRUE,correct,"Model states $1,800 million for FY2025 and $1,493 million for FY2024, matching the gold answer.",2/2,FALSE,0,0,0,1,0,"Grab's Deliveries segment generated **$1,800 million (US$1.8 billion)** in revenue for FY2025, up from $1,493 million in FY2024, representing a 21% year-over-year increase [Grab, FY2025, p.97; Grab, FY2025, p.98].",grab-2025 p.86; grab-2025 p.F-28; grab-2025 p.97; grab-2025 p.98; grab-2025 p.F-70,2,1,FALSE,6029,223,4.39
+L03,lookup,TRUE,correct,"Model states 12,012 full-time employees matching the gold answer, with additional correct details.",1/1,FALSE,1,1,1,1,1,"Grab had **12,012 full-time employees** as of December 31, 2025, broken down as follows: General and administrative – 1,375; Sales and marketing – 785; Operations, support and supermarket retail – 6,888; Research and development – 2,964. This total includes 865 employees from Everrise (a Malaysian supermarket chain acquired in March 2025) and 22 employees from Infermove (an AI robotics startup acquired in December 2025). In addition, Grab had 1,242 fixed-term contract employees and 3,956 temporary agency workers as of that date [Grab, FY2025, p.117].",grab-2025 p.117; grab-2025 p.69; grab-2025 p.F-27; grab-2025 p.117; grab-2025 p.19,2,1,FALSE,5768,334,4.56
+L04,lookup,TRUE,correct,"Model answer matches the gold answer's figure of approximately 102,700 employees.",1/1,FALSE,1,1,1,1,1,"Sea Limited had approximately 102,700 employees as of December 31, 2025 [Sea, FY2025, p.121].",sea-2025 p.121; sea-2025 p.121; sea-2025 p.75|76; sea-2025 p.F-46; sea-2025 p.F-67,2,1,FALSE,4656,186,4.09
+L05,lookup,TRUE,correct,"States $200 million profit for FY2025 vs $158 million loss in FY2024, matching gold answer.",2/2,FALSE,2,1,1,1,2,"Grab's profit for the year ended December 31, 2025 was **$200 million** (representing 6% of revenue), a turnaround from a net loss of $158 million in FY2024 [Grab, FY2025, p.92]. This is corroborated by risk factor disclosure stating Grab ""made a net profit of $0.2 billion in the year ended December 31, 2025"" [Grab, FY2025, p.13].",grab-2025 p.92; grab-2025 p.F-50; grab-2025 p.F-49; grab-2025 p.13; grab-2025 p.F-32,2,1,FALSE,5117,236,4.38
+L06,lookup,TRUE,correct,"Model states US$4,158,920 thousand, matching the gold answer exactly.",1/2,FALSE,2,1,1,1,2,"Sea Limited's cash and cash equivalents (excluding restricted cash) as of December 31, 2025 were **US$4,158,920 thousand (approximately US$4.16 billion)**, up from US$2,405,153 thousand as of December 31, 2024 [Sea, FY2025, p.F-7].
+
+For context, including restricted cash, total cash, cash equivalents and restricted cash were US$6.4 billion (US$6,419,467 thousand) as of December 31, 2025 [Sea, FY2025, p.107, 141].",sea-2025 p.F-30; sea-2025 p.141; sea-2025 p.106|107; sea-2025 p.108|109; sea-2025 p.107; sea-2025 p.F-30; sea-2025 p.F-13|F-14|F-15|F-16|F-17|F-18; sea-2025 p.F-7|F-8|F-9|F-10|F-11|F-12; sea-2025 p.106|107; sea-2025 p.F-7,3,2,FALSE,13176,527,8.01
+L07,lookup,TRUE,partial,"Model gives net income attributable to ordinary shareholders ($1,578,149K) rather than total net income ($1,610,894K), a related but different figure (likely differing by minority interest).",0/2,FALSE,3,0,0,1,3,"Sea Limited's net income attributable to ordinary shareholders for FY2025 was **US$1,578,149 thousand (~US$1.58 billion)**, up significantly from US$444,321 thousand in FY2024 [Sea, FY2025, p.F-70]. This resulted in basic earnings per share of US$2.65, compared to US$0.77 in FY2024 [Sea, FY2025, p.F-70].
+
+For context, income before income tax and share of results of equity investees was approximately US$2.3 billion in 2025 (up from US$778.8 million in 2024), with an income tax expense of US$651.1 million in 2025 [Sea, FY2025, p.101].",sea-2025 p.101; sea-2025 p.107|108; sea-2025 p.F-50; sea-2025 p.F-70; sea-2025 p.F-67,2,1,FALSE,4851,320,4.68
+L08,lookup,TRUE,correct,"Model states the same figures: $1,039 million in FY2025, up from $816 million in FY2024.",2/2,FALSE,1,1,1,1,1,"Grab earned $1,039 million in revenue from Malaysia in FY2025, up 27% from $816 million in FY2024 [Grab, FY2025, p.89].",grab-2025 p.89; grab-2025 p.F-54; grab-2025 p.42; grab-2025 p.F-54|F-55; grab-2025 p.87,2,1,FALSE,5128,161,2.76
+L09,lookup,TRUE,correct,"Model states $7.9 billion for FY2025 and $6.6 billion for FY2024, matching the gold answer.",2/2,FALSE,1,0,0,1,1,"Grab's Mobility GMV in FY2025 was **$7,901 million (~$7.9 billion)**, up 19% from $6,640 million ($6.6 billion) in FY2024 [Grab, FY2025, p.96].",grab-2025 p.98; grab-2025 p.96; grab-2025 p.96; grab-2025 p.5; grab-2025 p.97,2,1,FALSE,5099,177,3.71
+L10,lookup,TRUE,correct,"Model states $500 million Class A share repurchase authorized in Feb 2026, matching gold answer.",1/1,FALSE,0,0,0,1,0,"In February 2026, Grab's board of directors authorized a new share repurchase program allowing the repurchase of up to **$500 million** worth of its outstanding Class A Ordinary Shares. This new program is separate from (and in addition to) the prior $500 million program approved in February 2024 [Grab, FY2025, p.135; Grab, FY2025, p.49-50].",grab-2025 p.135; grab-2025 p.49|50; grab-2025 p.100; grab-2025 p.135; grab-2025 p.34; grab-2024 p.180; grab-2024 p.144; grab-2024 p.57|58; grab-2024 p.155; grab-2024 p.180,2,2,FALSE,8749,384,5.18
+N01,narrative,TRUE,correct,"States GMV growth of 26.8% to $127.4B as primary driver and increased monetization rate as secondary driver, matching the gold answer.",2/2,FALSE,5,3,1,1,5,"## Growth drivers of Sea's Shopee e-commerce service revenue in FY2025
+
+Sea's e-commerce (Shopee) service revenue grew **33.9%**, from US$10.9 billion in 2024 to US$14.5 billion in 2025 [Sea, FY2025, p.99, 100]. This growth was driven by two main factors:
+
+1. **GMV growth (primary driver):** Gross Merchandise Value (GMV) grew **26.8%**, from US$100.5 billion in 2024 to US$127.4 billion in 2025. This GMV growth itself was driven by:
+   - Overall online consumption growth across Sea's markets
+   - Continual improvements in service offerings, including faster delivery, enhanced user engagement through better e-commerce content, and greater efficiency in advertising and search
+   - Order volume growth of **27.2%**, from 10.9 billion orders in 2024 to 13.9 billion in 2025 (average order value remained stable at approximately US$9) [Sea, FY2025, p.99, 100]
+
+2. **Improved monetization rate (secondary driver):** The rate of monetization on GMV (e-commerce service revenue as a percentage of GMV) improved from **10.8%** in 2024 to **11.4%** in 2025 [Sea, FY2025, p.99, 100]. This monetization is generated primarily through:
+   - Paid advertising services charged to sellers
+   - Transaction-based fees
+   - Value-added services, including logistics and fulfillment [Sea, FY2025, p.95, 96]
+
+Additionally, on the profitability side, higher e-commerce gross profits in 2025 reflected both the GMV growth and the increased monetization rate, though this was partially offset by higher sales and marketing expenses driven by increased promotional activities and advertising through third-party channels [Sea, FY2025, p.107].",sea-2025 p.50|51; sea-2025 p.51|52; sea-2025 p.95|96; sea-2025 p.F-37|F-38; sea-2025 p.52|53; sea-2025 p.102; sea-2025 p.99|100; sea-2025 p.107|108; sea-2025 p.107; sea-2025 p.95|96,3,2,FALSE,15676,947,10.61
+N02,narrative,TRUE,correct,"Model states the core fact that growth was driven by credit business expansion with loans receivable growing from $4.2B to $8.0B, matching the gold answer, with additional supporting detail.",2/2,FALSE,1,1,1,1,1,"Sea's digital financial services (Monee) revenue increased by 60.1%, from US$2.4 billion in 2024 to US$3.8 billion in 2025. This growth was mainly driven by the expansion of Monee's credit business: lending activities increased significantly, with loans receivable growing from US$4.2 billion as of December 31, 2024 to US$8.0 billion as of December 31, 2025. This growth in loans receivable was driven by a combination of factors, including:
+
+- Growth of Sea's e-commerce platform (Shopee), which provides a strong user acquisition channel for Monee's credit products
+- Deepening penetration of consumer lending activities on the platform
+- Expansion of credit offerings beyond the e-commerce platform (off-Shopee)
+
+Approximately 95% of loans receivable as of December 31, 2025 were attributable to consumer and SME loans, reflecting Monee's core focus on Buy Now Pay Later, cash loans to Shopee buyers, and unsecured SME loans to Shopee sellers [Sea, FY2025, p.100, p.53].",sea-2025 p.100; sea-2025 p.102; sea-2025 p.53; sea-2025 p.58; sea-2025 p.27,2,1,FALSE,5714,506,6.1
+N03,narrative,TRUE,correct,"Model includes both larger active user base (QAU +5.7% to 657.7M) and deeper paying-user penetration, matching gold answer.",2/2,FALSE,3,3,1,1,3,"**Drivers of Sea's FY2025 Garena revenue growth**
+
+Sea's Digital Entertainment (Garena) revenue rose 26.1%, from US$1.9 billion in FY2024 to US$2.4 billion in FY2025 [Sea, FY2025, p.100]. The increase was primarily attributable to:
+
+- **A larger active user base**: average Game Quarterly Active Users (QAUs) increased 5.7%, from 622.3 million in 2024 to 657.7 million in 2025 [Sea, FY2025, p.100].
+- **Deepened paying user penetration**: average Game Quarterly Paying Users (QPUs) increased 23.9%, from 50.5 million in 2024 to 62.6 million in 2025 [Sea, FY2025, p.100] — i.e., a growing share of users converted into paying users, outpacing the growth in the overall user base.
+
+In short, the growth was driven mainly by rising paying-user penetration (nearly a quarter more paying users year-over-year) combined with modest growth in the overall active player base, rather than by price increases or new game launches specifically cited in the filing.",sea-2025 p.55; sea-2025 p.F-3; sea-2025 p.100; sea-2025 p.102|103; sea-2025 p.56,2,1,FALSE,6171,512,6.43
+N04,narrative,TRUE,correct,"Model answer includes GMV growth of 21% to $14.2B driven by consumer demand and product innovation, plus $161M from supermarket business, matching gold answer with additional detail.",3/3,FALSE,7,7,1,1,7,"Grab's Deliveries revenue grew from $1,493 million in 2024 to $1,800 million in 2025, a 21% increase [Grab, FY2025, p.97-98]. This growth was driven by several factors:
+
+1. **GMV growth of 21% ($2.5 billion increase to $14.2 billion)** – driven mainly by increased consumer demand and platform engagement, fueled by technology-led product innovations [Grab, FY2025, p.98].
+
+2. **Supermarket business expansion** – contributed an incremental $161 million to revenue, including the newly acquired Everrise business in 2025 [Grab, FY2025, p.98].
+
+3. **Product adoption and engagement initiatives** – growth was supported by continued adoption of affordability and high-value product initiatives, plus newer features such as Group Orders and Dine Out, which helped expand the platform's offerings and increase Monthly Transacting Users (MTUs), which rose 17% to 25.4 million in 2025 [Grab, FY2025, p.97-98].
+
+4. **Stable take rate** – deliveries revenue as a percentage of GMV remained consistent at 13% in both 2025 and 2024, meaning the revenue growth was largely volume-driven rather than from a higher monetization rate [Grab, FY2025, p.98].
+
+This growth was partially offset by higher incentives: partner incentives rose from $482 million to $620 million (+29%) and consumer incentives rose from $829 million to $1,004 million (+21%), as Grab continued to invest in new user growth and product adoption, though total incentives as a percentage of GMV remained flat year-over-year [Grab, FY2025, p.97-98].
+
+As a result of this revenue growth (plus disciplined cost management), Deliveries Segment Adjusted EBITDA improved to $287 million in 2025 from $196 million in 2024, a 47% increase [Grab, FY2025, p.97-98].",grab-2025 p.98; grab-2025 p.97; grab-2025 p.86; grab-2025 p.F-28; grab-2025 p.60,2,1,FALSE,6192,784,8.79
+N05,narrative,TRUE,correct,"Model includes both key drivers: $81M lending growth and $10M digital banking interest income, matching gold answer.",2/2,FALSE,5,3,1,1,5,"Grab's financial services revenue grew 38%, from $253 million in FY2024 to $347 million in FY2025 [Grab, FY2025, p.99]. The growth was driven primarily by:
+
+- **A $81 million increase from lending businesses** through Grab's ecosystem partners and users, consistent with rapid loan book expansion (the loan portfolio grew 120%, from $536 million to $1,180 million) [Grab, FY2025, p.98, 99].
+- **A $10 million increase in interest income** from securities and treasury bills placements in its digital banking business [Grab, FY2025, p.98].
+- Supporting this growth, **monthly transacting users (MTUs)** for financial services rose 16%, from 26.4 million to 30.7 million [Grab, FY2025, p.99].
+
+Despite the strong revenue growth, Segment Adjusted EBITDA actually declined slightly (from $(105)M to $(110)M), as the $94 million revenue increase was more than offset by a $63 million rise in expected credit loss provisions (tied to the loan book's rapid growth rather than credit quality deterioration), plus higher overhead, interest expense on deposits, data storage, and marketing costs related to the expanding digital banking business [Grab, FY2025, p.98].",grab-2025 p.98|99; grab-2025 p.F-29; grab-2025 p.99; grab-2025 p.86; grab-2025 p.61|62,2,1,FALSE,5916,549,7.51
+N06,narrative,TRUE,correct,"Model covers reclassification risk, added benefits/costs, unionization, and adverse business/financial/legal consequences, matching gold answer.",,FALSE,6,5,1,1,6,"## Driver-Partner Classification Risk in Grab's FY2025 20-F
+
+Grab's FY2025 annual report describes a significant risk relating to the **independent contractor classification** of its driver-partners, as follows:
+
+**1. Core risk — potential reclassification as employees**
+Grab currently classifies driver-partners as independent contractors, relying on factors such as: (i) drivers choosing whether, when, where, and how to provide services; (ii) ability to work for competing platforms; (iii) contractual acknowledgment of no employment relationship; (iv) use of their own vehicles; and (v) variable, performance-based earnings rather than fixed wages [Grab, FY2025, p.19].
+
+However, this status is ""highly sensitive"" to factors like public opinion, political conditions, and the degree of operational control Grab exercises (e.g., flexibility around opt-in and shift scheduling), as interpreted by regulators. Changes in law, regulation, or court rulings could force reclassification of driver-partners as employees, workers, or quasi-employees [Grab, FY2025, p.19].
+
+**2. Financial and legal consequences of reclassification**
+If reclassified, Grab would face materially higher costs, including wage and working-hour obligations (minimum wage, overtime, rest periods — potentially even for offline time), employee benefits (statutory contributions, insurance, termination pay, union fees), taxes, and penalties. Reclassification could also expose Grab to employer liability, agency liability, harassment/discrimination claims, and unionization efforts. The company notes it has generally prevailed in legal challenges so far, but faces ongoing lawsuits, and flags that **recent court rulings in the Philippines increase this classification risk** and could encourage further litigation [Grab, FY2025, p.19].
+
+**3. Regulatory trend toward new ""platform worker"" classifications**
+Even where independent contractor status is upheld, governments across Southeast Asia are creating new intermediate worker classifications with mandatory protections:
+- **Singapore's Platform Workers Act 2024 (PWA)** requires Grab to register as a platform operator and grants driver-partners rights including statutory account contributions, injury compensation, and worker representation/collective bargaining rights. Grab has raised platform fees to offset these added costs.
+- **Thailand** is drafting a Freelancer Act; **Malaysia's Gig Workers Act 2025** (gazetted December 2025, effective ~March 2026) would add obligations around minimum wage, grievance mechanisms, and social security.
+- Similar welfare-protection efforts are underway in **Indonesia, Thailand, and the Philippines** [Grab, FY2025, p.19].
+
+**4. Unionization risk**
+The PWA in Singapore permits recognized platform worker associations to collectively bargain with Grab. Unionization elsewhere could similarly raise costs, create operational inefficiencies, and lead to disruptive disputes harming Grab's reputation [Grab, FY2025, p.20].
+
+**Bottom line:** Grab warns that any reclassification of driver-partners as employees — or the emergence of new ""platform worker"" classifications with statutory protections — could materially and adversely affect its labor costs, business operations, and overall financial condition and results of operations [Grab, FY2025, p.19–20].",grab-2025 p.19; grab-2025 p.19; grab-2025 p.19; grab-2025 p.20; grab-2025 p.24,2,1,FALSE,5661,1204,12.77
+N07,narrative,TRUE,correct,Model includes both key facts: flat 10% commission cap and quasi-employee status requiring insurance/pension contributions.,1/1,FALSE,1,1,1,1,1,"Grab's FY2025 report states that in Indonesia, media reports indicate the government is considering a **draft presidential decree** that would reduce the maximum commission Grab can charge driver-partners. Currently, under Ministry of Transportation (""MOT"") Decree No. 667 of 2022 (as amended), the cap is 20% (comprising a 15% commission cap plus a 5% optional supporting fee cap). If the draft decree is adopted as reported, this would be lowered to a **flat 10% commission cap**. The draft decree would also reportedly reclassify driver-partners as quasi-employees (requiring Grab to fund insurance and pension/health contributions), allow government review of driver-partner agreements, and protect unionization rights [Grab, FY2025, p.16].",grab-2025 p.16; grab-2025 p.40; grab-2025 p.23; grab-2025 p.76; grab-2025 p.66|67,2,1,FALSE,6223,363,14.79
+N08,narrative,TRUE,correct,Matches gold answer: Free Fire unavailable in India since early 2022 due to government actions and remains unavailable.,,FALSE,1,1,1,1,1,"According to Sea's FY2025 annual report, in early 2022 Free Fire was made unavailable in the Google Play Store and iOS App Store in India due to unanticipated government actions, and it currently remains unavailable there [Sea, FY2025, p.10].",sea-2025 p.10; sea-2025 p.32; sea-2025 p.83; sea-2025 p.60; sea-2025 p.64|65,2,1,FALSE,6619,239,4.11
+N09,narrative,TRUE,partial,"Model captures the discretionary nature and lack of fixed policy but omits the key facts that Grab has never declared/paid dividends and does not expect to in the foreseeable future, instead emphasizing a share repurchase program not mentioned in the gold answer.",,FALSE,2,0,0,1,2,"According to Grab's FY2025 annual report, Grab has not adopted a formal fixed dividend policy. Its board of directors has **complete discretion** as to whether to distribute dividends, and the timing, amount, and form of any future dividends would depend on factors such as future results of operations and cash flow, capital requirements and surplus, distributions received from subsidiaries and consolidated affiliated entities, financial condition, contractual restrictions, and other factors the board deems relevant [Grab, FY2025, p.49, 50].
+
+Rather than paying dividends, Grab's board authorized a **share repurchase program** in February 2026, allowing the company to repurchase up to $500 million worth of its Class A Ordinary Shares. This program has no fixed end date, does not obligate Grab to repurchase any specific dollar amount or number of shares, and may be suspended or terminated at any time [Grab, FY2025, p.49, 50].",grab-2025 p.126; grab-2025 p.49|50; grab-2025 p.136; grab-2025 p.126; grab-2025 p.127|128,2,1,FALSE,5333,426,8.02
+N10,narrative,TRUE,correct,"Model states higher logistics costs driven by 33.0% order volume growth from 8.2B to 10.9B, matching gold answer.",3/3,FALSE,1,0,0,1,1,"Sea's e-commerce (Shopee) cost of revenue rose 38.6%, from US$5.2 billion in 2023 to US$7.2 billion in 2024. This increase was primarily driven by higher logistics costs, which in turn reflected a 33.0% surge in order volume — from 8.2 billion orders in 2023 to 10.9 billion orders in 2024 [Sea, FY2025, p.102, 103].",sea-2024 p.99|100; sea-2024 p.92|93|94; sea-2024 p.99; sea-2024 p.F-38; sea-2024 p.26; sea-2025 p.102|103; sea-2025 p.100; sea-2025 p.95|96; sea-2025 p.107; sea-2025 p.107|108,3,2,FALSE,13812,452,10.3
+C01,comparison,TRUE,correct,"Matches gold figures: Sea 36.4% growth vs Grab ~20% growth, with Sea growing faster.",3/6,FALSE,2,0,0,2,2,"Sea Limited's total revenue grew faster in FY2025.
+
+- **Sea**: Total revenue rose from US$16,819.9 million in FY2024 to US$22,938.5 million in FY2025, a growth of approximately **36.4%** [Sea, FY2025, p.95].
+- **Grab**: Total revenue rose from US$2,797 million in FY2024 to US$3,370 million in FY2025, a growth of approximately **20.5%** [Grab, FY2025, p.88].
+
+Sea's revenue growth rate (~36.4%) was roughly 1.8x faster than Grab's (~20.5%) in FY2025.",sea-2025 p.97|98; sea-2025 p.95|96; sea-2025 p.97; sea-2025 p.95; sea-2025 p.96|97; grab-2025 p.F-54|F-55; grab-2025 p.87; grab-2025 p.F-28; grab-2025 p.F-54; grab-2025 p.F-29; grab-2025 p.92; grab-2025 p.88; grab-2025 p.F-49; grab-2025 p.F-50; grab-2025 p.91,4,5,FALSE,27282,825,10.81
+C02,comparison,TRUE,correct,"Matches gold figures (102,700 vs 12,012) and correctly identifies Sea as having more employees, with equivalent difference calculation.",2/3,FALSE,2,2,2,2,2,"Sea Limited had significantly more employees than Grab at the end of 2025.
+
+- **Sea**: ~102,700 total employees as of December 31, 2025 [Sea, FY2025, p.121]
+- **Grab**: 12,012 full-time employees as of December 31, 2025 (plus 1,242 fixed-term contract employees and 3,956 temporary agency workers, which are reported separately) [Grab, FY2025, p.117]
+
+Sea had roughly **90,688 more employees** than Grab (102,700 vs. 12,012), based on the core/full-time employee headcounts each company reports in its 20-F.",sea-2025 p.121; sea-2025 p.121; sea-2025 p.75|76; sea-2025 p.F-46; sea-2025 p.F-67; grab-2025 p.117; grab-2025 p.117; grab-2025 p.96; grab-2025 p.89; grab-2025 p.69,3,3,FALSE,12260,510,10.04
+C03,comparison,TRUE,correct,"Model correctly identifies Sea (since 2010, EY) as having longer auditor tenure than Grab (since 2015, KPMG), matching the gold answer's facts.",0/1,TRUE,0,0,0,2,0,"This means Sea's auditor relationship (15 years as of FY2025) is 5 years longer than Grab's (10 years as of FY2025), making Sea the company with the longer-tenured auditor.",sea-2025 p.144; sea-2025 p.F-5|F-6; sea-2025 p.144|145; sea-2025 p.144; sea-2025 p.37; grab-2025 p.133; grab-2025 p.F-3|F-4; grab-2025 p.134; grab-2025 p.F-4; grab-2025 p.134; sea-2025 p.F-5|F-6; sea-2025 p.F-3|F-4|F-5; sea-2025 p.144; sea-2025 p.119|120; sea-2025 p.F-5,4,4,FALSE,24279,679,13.67
+C04,comparison,TRUE,correct,"Matches gold figures: Monee 60.1% growth ($2.4B to $3.8B) vs Grab ~37-38% growth ($253M to $347M), concluding Monee grew faster.",5/6,FALSE,2,2,2,2,2,"**Sea's Monee grew faster.** In FY2025, Monee's revenue increased 60.1% YoY (from ~US$2.4B to ~US$3.8B) [Sea, FY2025, p.100], outpacing Grab's Financial Services segment, which grew 38% YoY (from $253M to $347M) [Grab, FY2025, p.99] — a gap of roughly 22 percentage points.",sea-2025 p.F-73|F-74; sea-2025 p.F-38; sea-2025 p.53; sea-2025 p.54; sea-2025 p.102; grab-2025 p.98|99; grab-2025 p.F-29; grab-2025 p.86; grab-2025 p.99; grab-2025 p.F-69|F-70|F-71; sea-2025 p.102; sea-2025 p.100; sea-2025 p.100; sea-2025 p.27; sea-2025 p.53,4,4,FALSE,30911,778,8.83
+C05,comparison,TRUE,correct,"Matches gold figures: Shopee GMV +26.8% to $127.4B vs Grab deliveries GMV +21% to $14.2B, correctly identifying Shopee as faster.",4/4,FALSE,2,1,1,2,2,"Shopee's GMV grew 26.8% in FY2025 (from US$100.5 billion in 2024 to US$127.4 billion in 2025) [Sea, FY2025, p.99, 100], while Grab's Deliveries GMV grew 21% (from $11.7 billion in 2024 to $14.2 billion in 2025) [Grab, FY2025, p.96].
+
+**Shopee's GMV grew faster** — 26.8% vs. 21% for Grab's Deliveries GMV.",sea-2025 p.102; sea-2025 p.99|100; sea-2025 p.50|51; sea-2025 p.51|52; sea-2025 p.53; grab-2025 p.98; grab-2025 p.96; grab-2025 p.96; grab-2025 p.97; grab-2025 p.97,2,2,FALSE,8600,413,5.13
+C06,comparison,TRUE,correct,"Model matches gold figures: 36.4% FY2025 vs 28.8% FY2024, correctly identifying FY2025 as faster.",2/2,FALSE,2,0,0,2,2,"Sea's total revenue grew faster in FY2025 than in FY2024.
+
+- FY2024 total revenue was US$16,819,866 thousand, up ~28.8% from US$13,063,560 thousand in FY2023 [Sea, FY2024, p.91].
+- FY2025 total revenue was US$22,938,469 thousand, up ~36.4% from US$16,819,866 thousand in FY2024 [Sea, FY2025, p.95].
+
+So the growth rate accelerated from about 28.8% in FY2024 to about 36.4% in FY2025, meaning FY2025 saw faster revenue growth.",sea-2024 p.94|95; sea-2024 p.91|92; sea-2024 p.91; sea-2024 p.93; sea-2024 p.92; sea-2025 p.97|98; sea-2025 p.95|96; sea-2025 p.97; sea-2025 p.95; sea-2025 p.96|97,3,4,FALSE,17581,603,9.72
+C07,comparison,TRUE,correct,"Model states the same core facts: 11,267 to 12,012, an increase of 745 (~6.6%), matching the gold answer, with additional detail that doesn't contradict it.",4/4,FALSE,3,3,2,2,3,"Grab's full-time headcount increased from 11,267 at the end of 2024 to 12,012 at the end of 2025, an increase of 745 employees, or approximately 6.6% [Grab, FY2024, p.161; Grab, FY2025, p.117].
+
+Breaking this down by function:
+- General and administrative: decreased from 1,425 to 1,375
+- Sales and marketing: decreased from 853 to 785
+- Operations, support and supermarket retail: increased from 6,055 to 6,888 (the largest driver of growth)
+- Research and development: increased from 2,934 to 2,964
+
+[Grab, FY2024, p.161]; [Grab, FY2025, p.117]
+
+Note that the FY2025 total includes 865 employees from Everrise (a Malaysian supermarket chain acquired in March 2025) and 22 employees from Infermove (acquired December 2025), while the FY2024 total included 321 employees from Nham24 (acquired December 2024) — so part of the year-over-year increase reflects acquisitions rather than organic growth [Grab, FY2025, p.117].",grab-2025 p.117; grab-2025 p.69; grab-2025 p.F-27; grab-2025 p.117; grab-2025 p.19; grab-2024 p.161; grab-2024 p.90|91; grab-2024 p.161; grab-2024 p.F-26|F-27; grab-2024 p.102,3,3,FALSE,15883,625,7.33
+C08,comparison,TRUE,correct,Model matches gold figures: FY2025 21% to $14.2B vs FY2024 13% to $11.7B.,2/4,FALSE,2,0,0,2,2,"Grab's deliveries GMV grew faster in FY2025 than in FY2024.
+
+- FY2024: Deliveries GMV rose 13%, from $10.37 billion (2023) to $11.72 billion [Grab, FY2024, p.140].
+- FY2025: Deliveries GMV rose 21%, from $11.72 billion (2024) to $14.24 billion [Grab, FY2025, p.96].
+
+So FY2025's growth rate (21%) was notably higher than FY2024's (13%) — a difference of 8 percentage points.",grab-2024 p.142; grab-2024 p.139|140; grab-2024 p.132|133; grab-2024 p.140; grab-2024 p.140; grab-2025 p.98; grab-2025 p.96; grab-2025 p.96; grab-2025 p.97; grab-2025 p.97,2,2,FALSE,7946,472,7.81
+C09,comparison,TRUE,correct,"Matches gold figures: Shopee GMV +28.0% to $100.5B, Grab deliveries GMV +21% to $14.2B.",4/4,FALSE,0,0,0,2,0,"## Shopee GMV Growth (FY2024) vs. Grab Deliveries GMV Growth (FY2025)
+
+**Shopee (Sea Limited) — FY2024:**
+GMV grew **28.0%**, from US$78.5 billion in 2023 to US$100.5 billion in 2024. This growth was driven by a 33.0% increase in order volume (8.2 billion to 10.9 billion orders), partially offset by a slight decline in average order value (~US$10 to ~US$9) [Sea, FY2024, p.97; p.52].
+
+**Grab Deliveries — FY2025:**
+Deliveries GMV grew **21%** (approximately 21.4% precisely), from US$11.7 billion in 2024 to US$14.2 billion in 2025, driven by increased consumer demand, platform engagement, and new product features (e.g., Group Orders, Dine Out), along with 17% growth in deliveries MTUs [Grab, FY2025, p.98; p.96].
+
+**Comparison:**
+Shopee's e-commerce GMV growth in FY2024 (~28.0%) was notably faster than Grab's deliveries GMV growth in FY2025 (~21%) — a gap of roughly 7 percentage points. Shopee's growth was primarily volume-driven (orders up 33%), while Grab's deliveries growth combined higher transaction volumes with steady GMV-per-MTU gains (deliveries GMV per MTU up 4%, from $539 to $561) [Sea, FY2024, p.97; Grab, FY2025, p.97].",sea-2024 p.99; sea-2024 p.5; sea-2024 p.52; sea-2024 p.97; sea-2024 p.F-38; grab-2025 p.98; grab-2025 p.96; grab-2025 p.96; grab-2025 p.97; grab-2025 p.97,3,4,FALSE,14986,1007,10.33
+C10,comparison,TRUE,partial,"Sea's growth rates match (28.8%, 36.4%) and conclusion (Sea faster both years) is correct, but Grab's growth rates differ slightly (18.6%/20.5% vs gold's 19%/20%), close but not exact match for FY2024.",2/4,FALSE,0,0,0,4,0,"## Revenue Growth: Sea vs. Grab (FY2024 and FY2025)
+
+| Fiscal Year | Sea Revenue (US$'000) | Sea YoY Growth | Grab Revenue (US$M) | Grab YoY Growth |
+|---|---|---|---|---|
+| FY2024 | 16,819,866 (vs. 13,063,560 in FY2023) | **28.8%** | 2,797 (vs. 2,359 in FY2023) | 18.6% |
+| FY2025 | 22,938,469 (vs. 16,819,866 in FY2024) | **36.4%** | 3,370 (vs. 2,797 in FY2024) | 20.5% |
+
+**Conclusion:** Sea grew its revenue faster than Grab in both fiscal years.
+- In FY2024, Sea's revenue grew ~28.8% year-over-year, compared to Grab's ~18.6% [Sea, FY2024, p.91; Grab, FY2024, p.128].
+- In FY2025, Sea's revenue grew ~36.4% year-over-year, compared to Grab's ~20.5% [Sea, FY2025, p.95; Grab, FY2025, p.88].
+
+Sea's acceleration was driven primarily by strong growth across its e-commerce (Shopee), digital financial services (Monee), and digital entertainment (Garena) segments, while Grab's growth was driven by its deliveries, mobility, and financial services segments, but at a comparatively slower pace in both years.",sea-2024 p.94|95; sea-2024 p.91|92; sea-2024 p.91; sea-2024 p.93; sea-2024 p.92; sea-2025 p.97|98; sea-2025 p.95|96; sea-2025 p.97; sea-2025 p.95; sea-2025 p.96|97; grab-2024 p.125|126; grab-2024 p.F-27|F-28; grab-2024 p.F-54; grab-2024 p.F-55; grab-2024 p.F-29; grab-2025 p.F-54|F-55; grab-2025 p.87; grab-2025 p.F-28; grab-2025 p.F-54; grab-2025 p.F-29; grab-2024 p.128; grab-2024 p.F-54|F-55|F-56; grab-2024 p.F-5|F-6|F-7|F-8|F-9|F-10; grab-2024 p.F-12|F-13; grab-2024 p.125|126; grab-2025 p.88; grab-2025 p.F-5|F-6|F-7|F-8|F-9|F-10; grab-2025 p.F-12|F-13; grab-2025 p.F-32; grab-2025 p.F-49,4,10,FALSE,54159,1708,17.94
