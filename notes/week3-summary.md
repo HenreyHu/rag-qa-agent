@@ -17,6 +17,7 @@
 | Agent, run 1 | 90% | | | 80% | 90% | 100% |
 | Agent, run 2 | 90% | 3 (L07, N09, C10) | | | | |
 | Agent + hybrid, run 1 | 100% (30/30) | 0 | 0 | 100% | 100% | 100% |
+| Agent + hybrid, run 2 (prompt rules 5-6 added) | 97% (29/30) | 1 (C07) | 0 | 100% | 100% | 90% |
 
 Done criterion (comparison accuracy clearly above the 30% baseline): met. Comparison went from 30% to 100% (agent) and stayed 100% with hybrid.
 
@@ -39,16 +40,15 @@ The agent uses roughly 4 to 5 times the input tokens of basic RAG (comparison qu
 
 ## Remaining failures
 
-- L07: gave net income attributable to shareholders, not total net income (partial).
-- N09: omitted that the company has never paid a dividend (partial).
-- C10 (run 2): partial.
-- L06 (Sea cash and cash equivalents, p.F-7) abstained in run 1; the balance sheet table chunk is rarely retrieved by vector search.
+- Vector runs 1 and 2 had partial answers on L07 (net income attributable instead of total) and N09 (left out "never paid a dividend"), plus C10 in run 2, and L06 abstained in run 1. Both L07 and N09 were correct in both hybrid runs, after a generic prompt change (lead with the direct answer, give the headline total when a figure has variants, cite the primary statement over a note).
+- Hybrid run 2: C07 gave the 6.6% headcount growth but left out the two headcount figures (partial).
+- Gold-page citations are still low (about 64% in hybrid run 2): the agent often cites a different page that also supports the claim. All cited pages were really retrieved (100%).
 - C03 is flagged `needs_review`: the grader and the number check disagree (the gold numbers are years, which the check ignores).
 
 ## Caveats
 
 - Five of the 30 questions (L01, L06, N08, C01, C10) were used to tune the prompt, so the agent numbers are not a clean held-out result. Prompt changes were kept generic.
-- The model's temperature cannot be set, so individual questions vary between runs. Hybrid has one complete run; a second run hung on a single API call and was discarded, so hybrid is not the default.
+- The model's temperature cannot be set, so individual questions vary between runs. Hybrid has two complete runs (100%, 97%), but the prompt changed between them, and the vector setup has not been re-run with the new prompt (API credits ran out), so the default is still vector. The first attempt at a second hybrid run hung on one API call and was discarded; the client now has a 60s timeout with retries.
 - The grader is an LLM, with a number check alongside it.
 
 ## Next (Week 4)
