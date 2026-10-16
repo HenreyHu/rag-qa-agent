@@ -24,3 +24,4 @@ eval/results/traces/adhoc.jsonl
 # Editor and OS
 .vscode/
 Thumbs.db
+eval/results/traces/cli.jsonl
