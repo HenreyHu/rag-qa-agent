@@ -1,7 +1,5 @@
 # Write-up: RAG Q&A agent over Sea and Grab 20-F filings
 
-> DRAFT SCAFFOLD. The numbers and evidence below come from the repo's eval files. The plan says the findings should be in your own words, so each section ends with a **Your take** prompt. Replace those with what you actually concluded, and cut anything you can't explain in an interview.
-
 ## What this is
 
 An agent that answers questions about the FY2024 and FY2025 annual reports (Form 20-F) of Sea Limited and Grab Holdings, with `[Company, FYyear, p.X]` citations. It was evaluated on 30 hand-verified questions: 10 lookups, 10 narrative, 10 comparisons.
@@ -14,7 +12,9 @@ Evidence:
 - The three filing generators (Broadridge, Donnelley, Workiva) format pages differently, so the parser only relies on signals they share.
 - Tables: the balance sheet chunk was rarely retrieved by vector search. L06 (Sea's cash and cash equivalents, p.F-7) failed for this reason until the agent was told to name the statement in its search.
 
-**Your take:** why did the two strategies tie? What would you try next for tables?
+**Why the strategies tied.** Chunking is not the bottleneck here; retrieval is. Both strategies cut the text at sensible places (the parser uses the HTML block tags for paragraphs and tables, and page breaks only for page numbers), and both fail on the same questions: the wrong page, the wrong year, or one company missing. Those are ranking problems, not problems with where a chunk starts or ends. In `notes/failures.md` no failure was confirmed as a bad table either; L06 failed because the balance sheet chunk ranked too low.
+
+**Next for tables.** Tag each table chunk with the name of its statement (for example "Consolidated Balance Sheet") so a search that names the statement finds it. I have not tested this.
 
 ## 2. Where retrieval failed, and why
 
@@ -27,7 +27,11 @@ Evidence:
 - A perfect company and year filter (oracle) fixed only 2 of 30 questions, so filtering is not the main fix.
 - Hybrid keyword + vector search raised strict hit@5 from 50% to 60% (narrative 50% to 80%), but comparison stayed at 10%.
 
-**Your take:** which of these would you fix first in a real system, and why?
+**What I'd fix first: comparison.** It is the worst type (strict hit@5 of 10%), because one search for the whole question usually brings back only one company's pages. Basic RAG then said "I don't know" instead of answering (C01 is an example); it did not mix up the two companies. The agent fixes this by running one search per company and year, which is why C01 is answered correctly in run 3.
+
+Lookups are the easiest (90%), since one fact sits on one page, but they still depend on ranking: L06 failed when the balance sheet ranked too low. Narrative questions are harder because the "why" is spread over text that has to match the meaning of the question, and the wrong year or the business overview often outranks the right section.
+
+After comparison I would fix the wrong-year problem, but a company and year filter alone only fixed 2 of 30 questions, so it needs to be combined with better ranking.
 
 ## 3. When the agent loop helped, and when it only added cost
 
@@ -45,9 +49,11 @@ Evidence:
 - It helped most where basic RAG abstained (12 of 30 questions did): the agent searches again with different wording and runs one search per company and year.
 - Lookups were already 80-90% with basic RAG, so the agent mostly added cost there, except where a retry fixed a miss (L06).
 - Arithmetic goes through a `calculate` tool, so growth rates are not model guesses.
-- Remaining weak spot: gold-page citations (about 64%). The agent cites a different page that also supports the claim. All cited pages were really retrieved.
+- Remaining weak spot: gold-page citations (about 64% in hybrid run 2; 50-72% across runs depending on the check). The agent often cites a different page that also supports the claim. All cited pages were really retrieved. I left this as a known limitation.
 
-**Your take:** is a roughly 5x token cost worth it? For which question types?
+**Is about 5x the tokens worth it?** Not for every question. For lookups it is not worth it: basic RAG already got 80-90%, so the agent mostly adds cost. For comparisons and narrative questions it is worth it, because basic RAG abstained on 70% and 50% of them and the agent almost never did.
+
+But about 5x the tokens (about 17-21k for a comparison) is too much to pay on every question. A better design would send simple lookups through basic RAG and use the agent only for comparisons and for questions where the first search is weak. From what I read, other systems reduce cost with both the algorithm and the architecture: a cap on the number of steps (mine is 8, and no run reached it), caching common searches, and reranking so fewer chunks go to the model. I have not tested any of these.
 
 ## 4. Method caveats (say these out loud)
 
@@ -58,8 +64,10 @@ Evidence:
 
 ## 5. What I'd do with more time
 
-Fill in your own list. Candidates from the evidence: a reranker, better table extraction, a larger eval set with a held-out split, citing the primary statement page more reliably, running each setup 3+ times for variance.
+1. **A better data bank, not a bigger question bank.** The failures were about structure: comparisons that need both companies, the wrong year, the wrong page. I would add a structured layer next to the text search: extract the financial statement line items into a table (company, year, metric, value, page), add richer metadata for filtering, and give the agent a lookup tool for it, so a comparison becomes a query instead of several text searches. That makes the system answer new questions without anyone writing them. I would still keep a small hand-verified test set, plus a held-out part that I never tune on, because without one I cannot tell whether a change helped. 5 of the current 30 were used to tune the prompt.
+2. **Run each setup 3+ times.** Temperature cannot be set, so results vary. So will be taking average of the tests. the hybrid numbers come from only 2 runs.
+3. **Route by question type.** Add a query router and a reranker. A small classifier  would send lookups to a single hybrid search and comparisons to the agent, which splits them into one search per company and year. A cross-encoder reranker over the combined results would then keep only the best chunks, which cuts the roughly 5× token cost without losing accuracy
 
-## Resume bullet (draft, check the numbers before use)
+## Resume bullet
 
 - Built an agentic RAG system over Sea and Grab 20-F filings (Claude tool use, Chroma, BM25 + vector hybrid search, safe calculator tool, JSONL traces); on 30 hand-verified questions, raised answer accuracy from 50% to 90-100% and multi-hop comparison accuracy from 30% to 90-100% versus a single-retrieval baseline, at about 5x the tokens per question.

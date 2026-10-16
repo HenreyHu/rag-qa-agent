@@ -5,6 +5,8 @@ Agentic RAG over company annual reports, with citations and evals.
 The agent answers questions about Sea Limited's and Grab Holdings' annual reports (SEC Form 20-F).
 Every answer cites the report page it came from, and questions can compare companies or years.
 
+![Demo: the agent answering a Sea vs Grab revenue-growth question, with --trace](docs/demo.gif)
+
 ## Status
 
 All four weeks are built: ingestion and retrieval, basic RAG, an agent (Claude tool-use loop with `search_reports` and `calculate`) with hybrid (keyword + vector) search, and a CLI. The write-up is in [notes/writeup.md](notes/writeup.md).
