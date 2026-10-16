@@ -54,7 +54,7 @@ AGENT_MAX_STEPS = 8
 AGENT_MAX_TOKENS = 2048
 # How search_reports retrieves: "vector" (embeddings only) or "hybrid" (embeddings + BM25 keyword
 # match, fused by rank). The environment variable lets an eval run switch it without editing code.
-AGENT_SEARCH_MODE = os.environ.get("AGENT_SEARCH_MODE", "vector")
+AGENT_SEARCH_MODE = os.environ.get("AGENT_SEARCH_MODE", "hybrid")
 if AGENT_SEARCH_MODE not in ("vector", "hybrid"):
     raise ValueError(f"AGENT_SEARCH_MODE must be 'vector' or 'hybrid', got {AGENT_SEARCH_MODE!r}")
 AGENT_SYSTEM_PROMPT = f"""\

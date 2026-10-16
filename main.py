@@ -2,7 +2,7 @@
 
     python main.py "Whose revenue grew faster in FY2025, Sea or Grab?"
     python main.py "What was Sea's total revenue in 2025?" --mode rag --company Sea --year 2025
-    python main.py "..." --hybrid --trace
+    python main.py "..." --vector --trace
 
 The default is the agent (it searches as many times as it needs and does the arithmetic with a
 tool). --mode rag is the single-retrieval baseline, kept for comparison.
@@ -18,7 +18,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("question")
     parser.add_argument("--mode", choices=("agent", "rag"), default="agent")
     parser.add_argument(
-        "--hybrid", action="store_true", help="agent only: keyword + vector search (BM25 + RRF)"
+        "--vector", action="store_true", help="agent only: vector search only (default is hybrid)"
     )
     parser.add_argument("--trace", action="store_true", help="agent only: print each step")
     parser.add_argument("--company", help="rag only: Sea or Grab")
@@ -61,8 +61,8 @@ def ask(args: argparse.Namespace) -> None:
 
 def main(argv: list[str] | None = None) -> None:
     args = build_parser().parse_args(argv)
-    if args.hybrid:
-        os.environ["AGENT_SEARCH_MODE"] = "hybrid"  # must be set before src.config is imported
+    if args.vector:
+        os.environ["AGENT_SEARCH_MODE"] = "vector"  # must be set before src.config is imported
     from src.config import utf8_stdout
 
     utf8_stdout()

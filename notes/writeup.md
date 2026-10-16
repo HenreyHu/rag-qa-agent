@@ -36,7 +36,7 @@ Results on the same 30 questions (5 of them were used to tune the prompt):
 | Setup | Correct | Lookup | Narrative | Comparison |
 |---|---|---|---|---|
 | Basic RAG | 50% | 80% | 40% | 30% |
-| Agent (vector), 2 runs | 90%, 90% | 80% | 90% | 100% |
+| Agent (vector), 3 runs | 90%, 90%, 93% | 80% | 90-100% | 100% |
 | Agent + hybrid, 2 runs | 100%, 97% | 100% | 100% | 100%, 90% |
 
 Cost per question: basic RAG about 2,500 input tokens and 3s; agent about 11,900 tokens and 8.6s; comparisons about 17-21k tokens.
@@ -52,7 +52,7 @@ Evidence:
 ## 4. Method caveats (say these out loud)
 
 - 5 of the 30 questions (L01, L06, N08, C01, C10) were used to tune the prompt, so the agent numbers are not a clean held-out result. Prompt changes were kept generic.
-- Temperature cannot be set, so runs vary. Two runs per agent setup; the vector setup was not re-run after the last prompt change.
+- Temperature cannot be set, so runs vary. Two or three runs per agent setup; only the last run of each used the final prompt (vector 93%, hybrid 97%). Hybrid is the default because it fixes retrieval misses (L06, L07) that prompt changes did not, not because of the small gap in accuracy.
 - The grader is an LLM, cross-checked by a plain-code number check. One question (C03) is flagged for review.
 - 30 questions is small: one question is 3.3 percentage points.
 

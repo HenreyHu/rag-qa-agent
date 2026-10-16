@@ -7,18 +7,18 @@ Every answer cites the report page it came from, and questions can compare compa
 
 ## Status
 
-All four weeks are built: ingestion and retrieval, basic RAG, an agent (Claude tool-use loop with `search_reports` and `calculate`) with optional hybrid search, and a CLI. The write-up is in [notes/writeup.md](notes/writeup.md).
+All four weeks are built: ingestion and retrieval, basic RAG, an agent (Claude tool-use loop with `search_reports` and `calculate`) with hybrid (keyword + vector) search, and a CLI. The write-up is in [notes/writeup.md](notes/writeup.md).
 
 Agent vs basic RAG, same 30 questions (correct / total; 5 of the 30 were used to tune the agent prompt, and single runs vary):
 
-| Question type | Basic RAG | Agent (vector) | Agent (hybrid search, 1 run) |
+| Question type | Basic RAG | Agent (vector, final prompt) | Agent (hybrid, final prompt) |
 |---|---|---|---|
 | Lookup | 80% | 80% | 100% |
-| Narrative | 40% | 90% | 100% |
-| Comparison | 30% | 100% | 100% |
-| All | 50% | 90% (two runs: 90%, 90%) | 100% |
+| Narrative | 40% | 100% | 100% |
+| Comparison | 30% | 100% | 90% |
+| All | 50% | 93% | 97% |
 
-The agent costs more: about 11.9k input tokens and 8.6s per question against about 2.5k and 3s for basic RAG. See [notes/week3-summary.md](notes/week3-summary.md).
+The agent costs more: about 11-12k input tokens and 7-8s per question against about 2.5k and 3s for basic RAG. See [notes/week3-summary.md](notes/week3-summary.md).
 
 Baseline (Week 2) results on the 30 verified questions (section chunks, k = 5, no filters):
 
@@ -42,11 +42,11 @@ Retrieval strict hit@k, all 30 questions (chunking strategy: fixed / section):
 
 ```powershell
 .venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?"
-.venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?" --hybrid --trace
+.venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?" --trace
 .venv\Scripts\python.exe main.py "What was Sea's total revenue in 2025?" --mode rag --company Sea --year 2025
 ```
 
-The default is the agent. `--hybrid` adds keyword (BM25) search to the vector search, `--trace` prints each step, and `--mode rag` is the single-retrieval baseline. This needs the filings ingested first (see Run below) and an `ANTHROPIC_API_KEY` in `.env`.
+The default is the agent. The agent uses hybrid search (keyword BM25 plus vector, fused by reciprocal rank fusion); `--vector` switches to vector only, `--trace` prints each step, and `--mode rag` is the single-retrieval baseline. This needs the filings ingested first (see Run below) and an `ANTHROPIC_API_KEY` in `.env`.
 
 ## Architecture
 

@@ -4,7 +4,7 @@ import main
 def test_defaults_to_the_agent():
     args = main.build_parser().parse_args(["What was Sea's revenue?"])
     assert args.mode == "agent"
-    assert not args.hybrid
+    assert not args.vector
 
 
 def test_agent_mode_prints_answer_cost_and_retrieved_pages(monkeypatch, capsys):
@@ -30,9 +30,9 @@ def test_agent_mode_prints_answer_cost_and_retrieved_pages(monkeypatch, capsys):
     assert out.count("[Sea, FY2025, p.80]") == 2  # once in the answer, once in Retrieved (deduped)
 
 
-def test_hybrid_flag_sets_the_search_mode(monkeypatch):
+def test_vector_flag_sets_the_search_mode(monkeypatch):
     monkeypatch.delenv("AGENT_SEARCH_MODE", raising=False)
     monkeypatch.setattr(main, "ask", lambda args: None)
-    main.main(["q", "--hybrid"])
-    assert main.os.environ["AGENT_SEARCH_MODE"] == "hybrid"
+    main.main(["q", "--vector"])
+    assert main.os.environ["AGENT_SEARCH_MODE"] == "vector"
     monkeypatch.delenv("AGENT_SEARCH_MODE")

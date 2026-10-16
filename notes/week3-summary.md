@@ -5,7 +5,7 @@
 - `src/tools.py`: `search_reports(query, company?, year?)` (returns the top 5 chunks with `[Company, FYyear, p.X]` citations) and `calculate(expression)` (an `ast` whitelist, no `eval`). Mistakes by the model come back as `Error: ...` text so it can retry.
 - `src/agent.py`: a Claude tool-use loop (`claude-sonnet-5`). Step cap of 8; if the model is still calling tools at the cap, one extra call is made with tools switched off so there is always an answer. Every step is written to a JSONL trace (`eval/results/traces/<tag>/<qid>.jsonl`, viewable with `python -m eval.show_trace <qid>`).
 - `eval/answer_eval.py --mode agent --tag <name>`: scores the agent with the same grader, number check and citation checks as basic RAG, and adds turns, tool calls, tokens and seconds.
-- Optional hybrid search (`src/retrieve.py`): own Okapi BM25 fused with vector search by reciprocal rank fusion. Switch on with `AGENT_SEARCH_MODE=hybrid`; the default is still vector.
+- Optional hybrid search (`src/retrieve.py`): own Okapi BM25 fused with vector search by reciprocal rank fusion. It is the agent's default; `AGENT_SEARCH_MODE=vector` (or `main.py --vector`) turns it off.
 - Prompt rule added after L06 failed: do not conclude a figure is missing after one search; try two differently worded searches, and for a reported line item name the statement it would appear in.
 
 ## Results (30 verified questions)
@@ -16,6 +16,7 @@
 | Basic RAG re-run | 57% (17/30) | 1 | 12 | 9/10 | 5/10 | 3/10 |
 | Agent, run 1 | 90% | | | 80% | 90% | 100% |
 | Agent, run 2 | 90% | 3 (L07, N09, C10) | | | | |
+| Agent (vector), run 3 (final prompt) | 93% (28/30) | 1 (L07) | 1 (L06) | 80% | 100% | 100% |
 | Agent + hybrid, run 1 | 100% (30/30) | 0 | 0 | 100% | 100% | 100% |
 | Agent + hybrid, run 2 (prompt rules 5-6 added) | 97% (29/30) | 1 (C07) | 0 | 100% | 100% | 90% |
 
@@ -48,7 +49,7 @@ The agent uses roughly 4 to 5 times the input tokens of basic RAG (comparison qu
 ## Caveats
 
 - Five of the 30 questions (L01, L06, N08, C01, C10) were used to tune the prompt, so the agent numbers are not a clean held-out result. Prompt changes were kept generic.
-- The model's temperature cannot be set, so individual questions vary between runs. Hybrid has two complete runs (100%, 97%), but the prompt changed between them, and the vector setup has not been re-run with the new prompt (API credits ran out), so the default is still vector. The first attempt at a second hybrid run hung on one API call and was discarded; the client now has a 60s timeout with retries.
+- The model's temperature cannot be set, so individual questions vary between runs. With the final prompt, hybrid scored 97% and vector 93% (two complete hybrid runs, three vector runs overall), so hybrid is the default. That gap is small for 30 questions; the clearer evidence is that vector search still misses L06 (balance sheet table) and L07 (total net income) because the right chunk is not retrieved, which hybrid retrieves. The first attempt at a second hybrid run hung on one API call and was discarded; the client now has a 60s timeout with retries.
 - The grader is an LLM, with a number check alongside it.
 
 ## Next (Week 4)
