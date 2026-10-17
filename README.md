@@ -86,13 +86,13 @@ Basic RAG (`--mode rag`) is the same retrieval with one search and no loop.
 
 | Part | Choice | Why |
 |---|---|---|
-| Answering and agent | Claude (`claude-sonnet-5`) with tool use | Tool use gives the agent its search and calculator tools without a framework |
-| Grading | A separate Claude call, plus a plain-code number check | An LLM grader can be too strict or too generous, so the number check catches disagreements |
-| Embeddings | `BAAI/bge-small-en-v1.5` (sentence-transformers) | Free, runs locally on CPU |
+| Answering and agent | Claude (`claude-sonnet-5`, the model all results were measured on) tool-use agent (agentic RAG) | Tool use gives the agent its search and calculator tools without a framework |
+| Grading | LLM-as-judge (a separate Claude call), plus a deterministic number check | An LLM grader can be too strict or too generous, so the number check catches disagreements |
+| Embeddings | `BAAI/bge-small-en-v1.5` (sentence-transformers) | Free and runs locally on CPU, which suits a small project. Newer embedding models exist (for example BGE-M3 or Qwen3-Embedding); swapping one in is easy, but I did not test any |
 | Vector store | Chroma, one collection per chunking strategy | Local, stores company, year, page, section and `is_table` as metadata |
-| Keyword search | My own Okapi BM25, merged with vector results by reciprocal rank fusion | Finds exact terms such as statement names that vector search misses |
+| Keyword search | My own BM25 implementation, merged with vector results by reciprocal rank fusion | Finds exact terms such as statement names that vector search misses |
 | Parsing | `beautifulsoup4` on the EDGAR inline-XBRL HTML | Keeps the printed page number on every chunk |
-| Eval | Plain Python and a CSV of 30 questions | No framework, so I understand every metric |
+| Evaluation | Plain Python and a CSV of 30 hand-verified questions | No framework, so I understand every metric |
 
 I did not use LangChain or LlamaIndex. I wanted to see each step myself.
 
