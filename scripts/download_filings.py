@@ -33,6 +33,10 @@ ARCHIVE_URL = "https://www.sec.gov/Archives/edgar/data/{cik}/{accession}/{docume
 REQUEST_INTERVAL_S = 0.2
 MAX_ATTEMPTS = 4
 USER_AGENT_RE = re.compile(r"^\S.*\s\S+@\S+\.\S+$")
+# SEC's edge sometimes injects a bot-protection <script> before </body>; the filing is unchanged.
+INJECTED_SCRIPT = re.compile(
+    rb'<script type="text/javascript"\s+src="/[A-Za-z0-9/_-]+"></script>(?=</body>)'
+)
 
 
 def make_session() -> requests.Session:
@@ -119,7 +123,7 @@ def sha256_of(path: Path) -> str:
 
 
 def download(session: requests.Session, url: str, dest: Path) -> tuple[str, int]:
-    content = polite_get(session, url).content
+    content = INJECTED_SCRIPT.sub(b"", polite_get(session, url).content)
     # Every inline-XBRL filing carries a hidden ix:header; anything else is an error page.
     if b"ix:header" not in content:
         sys.exit(f"{url} does not look like an inline-XBRL filing.")
