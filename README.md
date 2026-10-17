@@ -17,8 +17,8 @@ The short version: basic RAG got 50%, and the agent got 90-100%. The long versio
 - [The models and tools I used](#the-models-and-tools-i-used)
 - [Challenges and what I learned](#challenges-and-what-i-learned)
 - [What I would do differently](#what-i-would-do-differently)
-- [Try it](#try-it)
 - [Setup and run (Windows)](#setup-and-run-windows)
+- [Try it](#try-it)
 
 ## Results
 
@@ -141,16 +141,6 @@ The full list, with the reasoning, is in [section 5 of the write-up](notes/write
 - **Run each setup 3+ times** and average, to see the real spread.
 - **Add a query router and a reranker,** so simple lookups take the cheap path and comparisons take the agent.
 
-## Try it
-
-```powershell
-.venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?"
-.venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?" --trace
-.venv\Scripts\python.exe main.py "What was Sea's total revenue in 2025?" --mode rag --company Sea --year 2025
-```
-
-The default is the agent with hybrid search (keyword BM25 plus vector, fused by reciprocal rank fusion). `--vector` switches to vector only, `--trace` prints each step, and `--mode rag` is the single-retrieval baseline. This needs the filings ingested first (see below) and an `ANTHROPIC_API_KEY` in `.env`.
-
 ## Setup and run (Windows)
 
 You need Windows with Python 3.12. Run every command from the repo folder in PowerShell. Only the steps marked "needs an API key" call Claude, and each person needs their own Anthropic API key (your `.env` file is gitignored, so keys are never uploaded).
@@ -216,6 +206,16 @@ The two experiments make no Claude calls unless you add `--answers`.
 .venv\Scripts\python.exe -m pytest
 .venv\Scripts\python.exe -m ruff check .
 ```
+
+## Try it
+
+```powershell
+.venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?"
+.venv\Scripts\python.exe main.py "Whose revenue grew faster in FY2025, Sea or Grab?" --trace
+.venv\Scripts\python.exe main.py "What was Sea's total revenue in 2025?" --mode rag --company Sea --year 2025
+```
+
+The default is the agent with hybrid search (keyword BM25 plus vector, fused by reciprocal rank fusion). `--vector` switches to vector only, `--trace` prints each step, and `--mode rag` is the single-retrieval baseline. This needs the filings ingested first (steps 1 to 3 above) and an `ANTHROPIC_API_KEY` in `.env`.
 
 ## Credits
 
